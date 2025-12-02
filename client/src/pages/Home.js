@@ -2,6 +2,26 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import './Home.css';
 
+// Game logos - using reliable public CDN sources
+const gameLogos = {
+  'Liên Quân Mobile': 'https://play-lh.googleusercontent.com/u-HxG-Q1fEpAL9w96iIEaBR0iQOY8yeqDuDvhUTr_J98nfOuAAa7S0B0nkAc0ROnnh555Qp2XYBqbN2FsvyN6p4=w240-h480-rw',
+  'PUBG Mobile': 'https://play-lh.googleusercontent.com/E_bwpvmFEiRGW4G9VnTIpoJ4XM-3udz3Jm2cDBVsavyu4pT12x2hNLI1ucWoS2KaQIoA=w240-h480-rw',
+  'Free Fire': 'https://play-lh.googleusercontent.com/fPV15zPzpECONm08K6BUS5EqD1A1Ir_hxsOaaJF7hOIK-BNDpFO-i3MAvUVM7952JJyGAhg1VJwzDKtYT2QB8Ns=w240-h480-rw',
+  'Mobile Legends': 'https://img.utdstc.com/icon/78d/66f/78d66ff1ab1bd23f7fd6d9cdb93854881cb8f0b69e8a301faaf4f4eab058d19e:200',
+  'Genshin Impact': 'https://play-lh.googleusercontent.com/YQqyKaXX-63krqsfIzUEJWUWLINxcb5tbS6QVySdxbS7eZV7YB2dUjUvX27xA0TIGtfxQ5v-tQjwlT5tTB-O',
+  'Valorant': 'https://i.pinimg.com/736x/cf/ae/88/cfae886e263126f685510e2f45b82970.jpg'
+};
+
+// Fallback icons if logo fails to load
+const gameIcons = {
+  'Liên Quân Mobile': '⚔️',
+  'PUBG Mobile': '🔫',
+  'Free Fire': '💥',
+  'Mobile Legends': '⚡',
+  'Genshin Impact': '🌟',
+  'Valorant': '🎯'
+};
+
 const Home = () => {
   return (
     <div className="home">
@@ -71,32 +91,86 @@ const Home = () => {
         <h2 className="section-title">Các game phổ biến</h2>
         <div className="games-grid">
           <div className="game-card">
-            <div className="game-icon">⚔️</div>
+            <div className="game-icon">
+              <img 
+                src={gameLogos['Liên Quân Mobile']} 
+                alt="Liên Quân Mobile"
+                onError={(e) => {
+                  e.target.style.display = 'none';
+                  e.target.parentElement.innerHTML = `<span style="font-size: 3rem;">${gameIcons['Liên Quân Mobile']}</span>`;
+                }}
+              />
+            </div>
             <h3>Liên Quân Mobile</h3>
             <p>Rank từ Bạch Kim đến Thách Đấu</p>
           </div>
           <div className="game-card">
-            <div className="game-icon">🔫</div>
+            <div className="game-icon">
+              <img 
+                src={gameLogos['PUBG Mobile']} 
+                alt="PUBG Mobile"
+                onError={(e) => {
+                  e.target.style.display = 'none';
+                  e.target.parentElement.innerHTML = `<span style="font-size: 3rem;">${gameIcons['PUBG Mobile']}</span>`;
+                }}
+              />
+            </div>
             <h3>PUBG Mobile</h3>
             <p>Rank từ Diamond đến Conqueror</p>
           </div>
           <div className="game-card">
-            <div className="game-icon">💥</div>
+            <div className="game-icon">
+              <img 
+                src={gameLogos['Free Fire']} 
+                alt="Free Fire"
+                onError={(e) => {
+                  e.target.style.display = 'none';
+                  e.target.parentElement.innerHTML = `<span style="font-size: 3rem;">${gameIcons['Free Fire']}</span>`;
+                }}
+              />
+            </div>
             <h3>Free Fire</h3>
             <p>Rank từ Vàng đến Huyền Thoại</p>
           </div>
           <div className="game-card">
-            <div className="game-icon">⚡</div>
+            <div className="game-icon">
+              <img 
+                src={gameLogos['Mobile Legends']} 
+                alt="Mobile Legends"
+                onError={(e) => {
+                  e.target.style.display = 'none';
+                  e.target.parentElement.innerHTML = `<span style="font-size: 3rem;">${gameIcons['Mobile Legends']}</span>`;
+                }}
+              />
+            </div>
             <h3>Mobile Legends</h3>
             <p>Rank từ Epic đến Mythic Glory</p>
           </div>
           <div className="game-card">
-            <div className="game-icon">🌟</div>
+            <div className="game-icon">
+              <img 
+                src={gameLogos['Genshin Impact']} 
+                alt="Genshin Impact"
+                onError={(e) => {
+                  e.target.style.display = 'none';
+                  e.target.parentElement.innerHTML = `<span style="font-size: 3rem;">${gameIcons['Genshin Impact']}</span>`;
+                }}
+              />
+            </div>
             <h3>Genshin Impact</h3>
             <p>AR từ 45 đến 55</p>
           </div>
           <div className="game-card">
-            <div className="game-icon">🎯</div>
+            <div className="game-icon">
+              <img 
+                src={gameLogos['Valorant']} 
+                alt="Valorant"
+                onError={(e) => {
+                  e.target.style.display = 'none';
+                  e.target.parentElement.innerHTML = `<span style="font-size: 3rem;">${gameIcons['Valorant']}</span>`;
+                }}
+              />
+            </div>
             <h3>Valorant</h3>
             <p>Rank từ Platinum đến Immortal</p>
           </div>

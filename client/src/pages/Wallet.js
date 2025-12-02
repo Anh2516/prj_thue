@@ -69,6 +69,11 @@ const Wallet = () => {
       return;
     }
 
+    if (topUpAmount > 100000000) {
+      alert('Số tiền nạp tối đa là 100.000.000 ₫');
+      return;
+    }
+
     // Chỉ hiển thị QR code, không tạo request ngay
     setCurrentRequest({
       amount: topUpAmount,
@@ -153,9 +158,10 @@ const Wallet = () => {
                 id="amount"
                 value={amount}
                 onChange={(e) => setAmount(e.target.value)}
-                placeholder="Nhập số tiền (tối thiểu 10.000 ₫)"
+                placeholder="Nhập số tiền (tối thiểu 10.000 ₫, tối đa 100.000.000 ₫)"
                 min="10000"
                 step="1000"
+                max="100000000"
                 required
                 disabled={loading}
               />
@@ -218,6 +224,7 @@ const Wallet = () => {
           <ul>
             <li>Số dư có thể sử dụng để thanh toán các đơn hàng</li>
             <li>Số tiền nạp tối thiểu: 10.000 ₫</li>
+            <li>Số tiền nạp tối đa: 100.000.000 ₫</li>
             <li>Số dư không có thời hạn sử dụng</li>
             <li>Bạn có thể nạp tiền bất cứ lúc nào</li>
           </ul>

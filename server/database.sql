@@ -9,7 +9,7 @@ CREATE TABLE IF NOT EXISTS users (
   email VARCHAR(100) UNIQUE NOT NULL,
   password VARCHAR(255) NOT NULL,
   role ENUM('user', 'admin') DEFAULT 'user',
-  balance DECIMAL(10, 2) DEFAULT 0.00 COMMENT 'User wallet balance',
+  balance DECIMAL(20, 2) DEFAULT 0.00 COMMENT 'User wallet balance',
   customer_code VARCHAR(20) UNIQUE COMMENT 'Unique customer code for top-up',
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
@@ -19,7 +19,7 @@ CREATE TABLE IF NOT EXISTS products (
   id INT AUTO_INCREMENT PRIMARY KEY,
   game_name VARCHAR(100) NOT NULL,
   account_level VARCHAR(50),
-  price DECIMAL(10, 2) NOT NULL,
+  price DECIMAL(20, 2) NOT NULL,
   description TEXT,
   account_info TEXT,
   featured_image VARCHAR(500) DEFAULT NULL COMMENT 'URL of featured/thumbnail image for product card',
@@ -33,7 +33,7 @@ CREATE TABLE IF NOT EXISTS orders (
   id INT AUTO_INCREMENT PRIMARY KEY,
   user_id INT NOT NULL,
   product_id INT NOT NULL,
-  total_price DECIMAL(10, 2) NOT NULL,
+  total_price DECIMAL(20, 2) NOT NULL,
   payment_method VARCHAR(50) DEFAULT 'cash',
   status ENUM('pending', 'completed', 'cancelled') DEFAULT 'pending',
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -45,7 +45,7 @@ CREATE TABLE IF NOT EXISTS orders (
 CREATE TABLE IF NOT EXISTS topup_requests (
   id INT AUTO_INCREMENT PRIMARY KEY,
   user_id INT NOT NULL,
-  amount DECIMAL(10, 2) NOT NULL,
+  amount DECIMAL(20, 2) NOT NULL,
   customer_code VARCHAR(20) NOT NULL,
   status ENUM('pending', 'approved', 'rejected') DEFAULT 'pending',
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,

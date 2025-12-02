@@ -1,6 +1,30 @@
 import axios from 'axios';
 
-const API_URL = 'http://localhost:5000/api';
+// Auto-detect API URL based on current host
+// If running on localhost, use localhost:5000
+// If running on IP address (mobile access), use the same IP with port 5000
+const getApiUrl = () => {
+  // Check if we're in development mode
+  if (process.env.NODE_ENV === 'development') {
+    // Get current hostname (could be localhost or IP address)
+    const hostname = window.location.hostname;
+    // If accessing via IP address, use that IP for API
+    if (hostname !== 'localhost' && hostname !== '127.0.0.1') {
+      return `http://${hostname}:5000/api`;
+    }
+    // Default to localhost for local development
+    return 'http://localhost:5000/api';
+  }
+  // Production: use relative URL or environment variable
+  return process.env.REACT_APP_API_URL || '/api';
+};
+
+const API_URL = getApiUrl();
+
+// Debug: Log API URL for troubleshooting
+console.log('API URL:', API_URL);
+console.log('Current hostname:', window.location.hostname);
+console.log('Current origin:', window.location.origin);
 
 const axiosInstance = axios.create({
   baseURL: API_URL,

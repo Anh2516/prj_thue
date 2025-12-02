@@ -32,6 +32,10 @@ router.post('/topup-request', auth, async (req, res) => {
       return res.status(400).json({ message: 'Số tiền nạp tối thiểu là 10.000 ₫' });
     }
     
+    if (amount > 100000000) {
+      return res.status(400).json({ message: 'Số tiền nạp tối đa là 100.000.000 ₫' });
+    }
+    
     // Get user with customer code
     const [users] = await db.query('SELECT customer_code FROM users WHERE id = ?', [req.user.id]);
     

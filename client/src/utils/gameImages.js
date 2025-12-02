@@ -7,12 +7,6 @@ export const getGameImage = (gameName) => {
     'Mobile Legends': 'linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)',
     'Genshin Impact': 'linear-gradient(135deg, #fa709a 0%, #fee140 100%)',
     'Valorant': 'linear-gradient(135deg, #30cfd0 0%, #330867 100%)',
-    'Wild Rift': 'linear-gradient(135deg, #a8edea 0%, #fed6e3 100%)',
-    'Call of Duty Mobile': 'linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%)',
-    'Arena of Valor': 'linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%)',
-    'Clash Royale': 'linear-gradient(135deg, #ff6e7f 0%, #bfe9ff 100%)',
-    'Brawl Stars': 'linear-gradient(135deg, #e0c3fc 0%, #8ec5fc 100%)',
-    'Tốc Chiến': 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
   };
 
   return gradients[gameName] || 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)';
@@ -27,14 +21,23 @@ export const getGameIcon = (gameName) => {
     'Mobile Legends': '⚡',
     'Genshin Impact': '🌟',
     'Valorant': '🎯',
-    'Wild Rift': '⚔️',
-    'Call of Duty Mobile': '🎮',
-    'Arena of Valor': '🛡️',
-    'Clash Royale': '👑',
-    'Brawl Stars': '⭐',
-    'Tốc Chiến': '⚔️',
   };
 
   return icons[gameName] || '🎮';
+};
+
+// Get game logo URL - BẠN CÓ THỂ THAY ĐỔI URL LOGO Ở ĐÂY
+// Thay đổi URL trong object 'logos' bên dưới để sử dụng logo của bạn
+export const getGameLogo = (gameName) => {
+  const logos = {
+    'Liên Quân Mobile': 'https://play-lh.googleusercontent.com/u-HxG-Q1fEpAL9w96iIEaBR0iQOY8yeqDuDvhUTr_J98nfOuAAa7S0B0nkAc0ROnnh555Qp2XYBqbN2FsvyN6p4=w240-h480-rw',
+    'PUBG Mobile': 'https://play-lh.googleusercontent.com/E_bwpvmFEiRGW4G9VnTIpoJ4XM-3udz3Jm2cDBVsavyu4pT12x2hNLI1ucWoS2KaQIoA=w240-h480-rw',
+    'Free Fire': 'https://play-lh.googleusercontent.com/fPV15zPzpECONm08K6BUS5EqD1A1Ir_hxsOaaJF7hOIK-BNDpFO-i3MAvUVM7952JJyGAhg1VJwzDKtYT2QB8Ns=w240-h480-rw',
+    'Mobile Legends': 'https://img.utdstc.com/icon/78d/66f/78d66ff1ab1bd23f7fd6d9cdb93854881cb8f0b69e8a301faaf4f4eab058d19e:200',
+    'Genshin Impact': 'https://play-lh.googleusercontent.com/YQqyKaXX-63krqsfIzUEJWUWLINxcb5tbS6QVySdxbS7eZV7YB2dUjUvX27xA0TIGtfxQ5v-tQjwlT5tTB-O',
+    'Valorant': 'https://i.pinimg.com/736x/cf/ae/88/cfae886e263126f685510e2f45b82970.jpg',
+  };
+
+  return logos[gameName] || null;
 };
 

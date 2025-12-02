@@ -12,6 +12,8 @@
     "migrate-balance": "node scripts/addBalanceColumn.js",
     "migrate-customer-code": "node scripts/addCustomerCodeAndTopupTable.js",
     "migrate-featured-image": "node scripts/addFeaturedImageColumn.js",
+    "migrate-expand-decimal": "node scripts/expandDecimalColumns.js",
+    "remove-unused-games": "node scripts/removeUnusedGames.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],

@@ -23,10 +23,22 @@ const Admin = () => {
     price: '',
     description: '',
     account_info: '',
+    account_username: '',
+    account_password: '',
     featured_image: '',
     images: [],
     status: 'available',
   });
+
+  // List of allowed games
+  const allowedGames = [
+    'Liên Quân Mobile',
+    'PUBG Mobile',
+    'Free Fire',
+    'Mobile Legends',
+    'Genshin Impact',
+    'Valorant'
+  ];
   const [showUserForm, setShowUserForm] = useState(false);
   const [editingUser, setEditingUser] = useState(null);
   const [userForm, setUserForm] = useState({
@@ -156,12 +168,21 @@ const Admin = () => {
             : Number(productForm.price))
         : 0;
 
+      // Combine username and password into account_info
+      let accountInfo = '';
+      if (productForm.account_username && productForm.account_password) {
+        accountInfo = `Username: ${productForm.account_username.trim()}, Password: ${productForm.account_password.trim()}`;
+      } else if (productForm.account_info) {
+        // Fallback to old format if username/password not provided
+        accountInfo = productForm.account_info.trim();
+      }
+
       const submitData = {
         game_name: productForm.game_name ? productForm.game_name.trim() : '',
         account_level: productForm.account_level ? productForm.account_level.trim() : '',
         price: priceValue,
         description: productForm.description ? productForm.description.trim() : '',
-        account_info: productForm.account_info ? productForm.account_info.trim() : '',
+        account_info: accountInfo,
         featured_image: productForm.featured_image && productForm.featured_image.trim() ? productForm.featured_image.trim() : null,
         status: productForm.status || 'available',
         images: productForm.images && Array.isArray(productForm.images) 
@@ -206,6 +227,8 @@ const Admin = () => {
         price: '',
         description: '',
         account_info: '',
+        account_username: '',
+        account_password: '',
         featured_image: '',
         images: [],
         status: 'available',
@@ -248,6 +271,18 @@ const Admin = () => {
         }
       }
       
+      // Parse account_info to extract username and password
+      let accountUsername = '';
+      let accountPassword = '';
+      if (freshProduct.account_info) {
+        const accountInfo = freshProduct.account_info;
+        // Try to parse format: "Username: xxx, Password: yyy"
+        const usernameMatch = accountInfo.match(/Username:\s*([^,]+)/i);
+        const passwordMatch = accountInfo.match(/Password:\s*(.+)/i);
+        if (usernameMatch) accountUsername = usernameMatch[1].trim();
+        if (passwordMatch) accountPassword = passwordMatch[1].trim();
+      }
+
       setEditingProduct(freshProduct);
       setProductForm({
         game_name: freshProduct.game_name || '',
@@ -255,6 +290,8 @@ const Admin = () => {
         price: freshProduct.price || '',
         description: freshProduct.description || '',
         account_info: freshProduct.account_info || '',
+        account_username: accountUsername,
+        account_password: accountPassword,
         featured_image: freshProduct.featured_image || '',
         images: parsedImages,
         status: freshProduct.status || 'available',
@@ -276,6 +313,17 @@ const Admin = () => {
         }
       }
       
+      // Parse account_info to extract username and password (fallback)
+      let accountUsername = '';
+      let accountPassword = '';
+      if (product.account_info) {
+        const accountInfo = product.account_info;
+        const usernameMatch = accountInfo.match(/Username:\s*([^,]+)/i);
+        const passwordMatch = accountInfo.match(/Password:\s*(.+)/i);
+        if (usernameMatch) accountUsername = usernameMatch[1].trim();
+        if (passwordMatch) accountPassword = passwordMatch[1].trim();
+      }
+
       setEditingProduct(product);
       setProductForm({
         game_name: product.game_name || '',
@@ -283,6 +331,8 @@ const Admin = () => {
         price: product.price || '',
         description: product.description || '',
         account_info: product.account_info || '',
+        account_username: accountUsername,
+        account_password: accountPassword,
         featured_image: product.featured_image || '',
         images: parsedImages,
         status: product.status || 'available',
@@ -574,6 +624,8 @@ const Admin = () => {
                           price: '',
                           description: '',
                           account_info: '',
+                          account_username: '',
+                          account_password: '',
                           featured_image: '',
                           images: [],
                           status: 'available',
@@ -612,14 +664,20 @@ const Admin = () => {
                         <form onSubmit={handleProductSubmit}>
                           <div className="form-group">
                             <label>Tên game</label>
-                            <input
-                              type="text"
+                            <select
                               value={productForm.game_name}
                               onChange={(e) =>
                                 setProductForm({ ...productForm, game_name: e.target.value })
                               }
                               required
-                            />
+                            >
+                              <option value="">-- Chọn game --</option>
+                              {allowedGames.map((game) => (
+                                <option key={game} value={game}>
+                                  {game}
+                                </option>
+                              ))}
+                            </select>
                           </div>
                           <div className="form-group">
                             <label>Rank</label>
@@ -653,12 +711,36 @@ const Admin = () => {
                           </div>
                           <div className="form-group">
                             <label>Thông tin tài khoản</label>
-                            <textarea
-                              value={productForm.account_info}
-                              onChange={(e) =>
-                                setProductForm({ ...productForm, account_info: e.target.value })
-                              }
-                            />
+                            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+                              <div>
+                                <label style={{ display: 'block', marginBottom: '0.25rem', fontSize: '0.9rem', color: '#555' }}>
+                                  Tài khoản (Username)
+                                </label>
+                                <input
+                                  type="text"
+                                  value={productForm.account_username}
+                                  onChange={(e) =>
+                                    setProductForm({ ...productForm, account_username: e.target.value })
+                                  }
+                                  placeholder="Nhập username"
+                                  style={{ width: '100%' }}
+                                />
+                              </div>
+                              <div>
+                                <label style={{ display: 'block', marginBottom: '0.25rem', fontSize: '0.9rem', color: '#555' }}>
+                                  Mật khẩu (Password)
+                                </label>
+                                <input
+                                  type="text"
+                                  value={productForm.account_password}
+                                  onChange={(e) =>
+                                    setProductForm({ ...productForm, account_password: e.target.value })
+                                  }
+                                  placeholder="Nhập password"
+                                  style={{ width: '100%' }}
+                                />
+                              </div>
+                            </div>
                           </div>
                           <div className="form-group">
                             <label>Ảnh đại diện (URL)</label>

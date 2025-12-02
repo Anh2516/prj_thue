@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { fetchProducts } from '../store/slices/productSlice';
 import { addToCart } from '../store/slices/cartSlice';
-import { getGameImage, getGameIcon } from '../utils/gameImages';
+import { getGameImage, getGameIcon, getGameLogo } from '../utils/gameImages';
 import { formatPrice } from '../utils/formatPrice';
 import './Products.css';
 
@@ -176,6 +176,7 @@ const Products = () => {
           filteredProducts.map((product) => {
             const gameImage = getGameImage(product.game_name);
             const gameIcon = getGameIcon(product.game_name);
+            const gameLogo = getGameLogo(product.game_name);
             const hasFeaturedImage = product.featured_image && product.featured_image.trim() !== '';
             
             return (
@@ -187,20 +188,39 @@ const Products = () => {
                       alt={product.game_name}
                       className="product-featured-image"
                       onError={(e) => {
-                        // Fallback to gradient if image fails to load
+                        // Fallback to logo if image fails to load
                         e.target.style.display = 'none';
+                        const logoContainer = e.target.parentElement.querySelector('.product-game-logo');
                         const gradient = e.target.parentElement.querySelector('.product-image-gradient');
-                        if (gradient) {
+                        if (logoContainer && gameLogo) {
+                          logoContainer.style.display = 'flex';
+                        } else if (gradient) {
                           gradient.style.display = 'flex';
                         }
                       }}
                     />
                   ) : null}
+                  {!hasFeaturedImage && gameLogo ? (
+                    <div className="product-game-logo">
+                      <img 
+                        src={gameLogo} 
+                        alt={product.game_name}
+                        onError={(e) => {
+                          // Fallback to gradient + icon if logo fails
+                          e.target.style.display = 'none';
+                          const gradient = e.target.parentElement.parentElement.querySelector('.product-image-gradient');
+                          if (gradient) {
+                            gradient.style.display = 'flex';
+                          }
+                        }}
+                      />
+                    </div>
+                  ) : null}
                   <div 
                     className="product-image-gradient" 
                     style={{ 
                       background: gameImage,
-                      display: hasFeaturedImage ? 'none' : 'flex'
+                      display: (hasFeaturedImage || gameLogo) ? 'none' : 'flex'
                     }}
                   >
                     <div className="product-icon">{gameIcon}</div>

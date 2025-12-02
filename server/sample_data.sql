@@ -41,31 +41,5 @@ INSERT INTO products (game_name, account_level, price, description, account_info
 -- Valorant
 ('Valorant', 'Immortal', 950000, 'Nick Valorant rank Immortal, nhiều skin premium, full agent, có skin Vandal/Phantom hiếm', 'Username: valorant_immortal, Password: val2024'),
 ('Valorant', 'Diamond', 650000, 'Nick Valorant rank Diamond, nhiều skin đẹp, full agent, skin tốt', 'Username: valorant_diamond, Password: diamond123'),
-('Valorant', 'Platinum', 450000, 'Nick Valorant rank Platinum, skin khá, đủ agent, vũ khí ổn', 'Username: valorant_plat, Password: plat123'),
-
--- League of Legends: Wild Rift
-('Wild Rift', 'Diamond', 380000, 'Nick Wild Rift rank Diamond, nhiều tướng, skin đẹp, full trang bị', 'Username: wr_diamond, Password: wr2024'),
-('Wild Rift', 'Master', 580000, 'Nick Wild Rift rank Master, đầy đủ tướng, skin hiếm, full trang bị max', 'Username: wr_master, Password: master123'),
-('Wild Rift', 'Emerald', 280000, 'Nick Wild Rift rank Emerald, nhiều tướng, skin tốt', 'Username: wr_emerald, Password: emerald123'),
-
--- Call of Duty Mobile
-('Call of Duty Mobile', 'Legendary', 520000, 'Nick COD Mobile rank Legendary, nhiều skin vũ khí hiếm, full operator, có skin mythic', 'Username: cod_legendary, Password: cod2024'),
-('Call of Duty Mobile', 'Master', 380000, 'Nick COD Mobile rank Master, nhiều skin đẹp, full operator, vũ khí tốt', 'Username: cod_master, Password: master123'),
-('Call of Duty Mobile', 'Pro', 250000, 'Nick COD Mobile rank Pro, skin khá, đủ operator, vũ khí ổn', 'Username: cod_pro, Password: pro123'),
-
--- Arena of Valor (AOV)
-('Arena of Valor', 'Diamond', 320000, 'Nick AOV rank Diamond, nhiều tướng, skin đẹp, full trang bị', 'Username: aov_diamond2, Password: aov123'),
-('Arena of Valor', 'Master', 480000, 'Nick AOV rank Master, đầy đủ tướng, skin hiếm, trang bị max', 'Username: aov_master2, Password: master2024'),
-
--- Clash Royale
-('Clash Royale', 'Challenger III', 280000, 'Nick Clash Royale Challenger III, nhiều thẻ max level, full deck meta', 'Username: cr_challenger, Password: cr2024'),
-('Clash Royale', 'Master I', 380000, 'Nick Clash Royale Master I, thẻ gần full max, deck mạnh, nhiều emote', 'Username: cr_master, Password: master123'),
-
--- Brawl Stars
-('Brawl Stars', '30k Trophies', 350000, 'Nick Brawl Stars 30k trophies, nhiều brawler max, skin đẹp, full gadget', 'Username: bs_30k, Password: bs2024'),
-('Brawl Stars', '25k Trophies', 250000, 'Nick Brawl Stars 25k trophies, nhiều brawler, skin tốt, gadget đủ', 'Username: bs_25k, Password: bs123'),
-
--- Tốc Chiến (Wild Rift)
-('Tốc Chiến', 'Cao Thủ', 420000, 'Nick Tốc Chiến rank Cao Thủ, nhiều tướng, skin đẹp, full trang bị', 'Username: tc_caothu, Password: tc2024'),
-('Tốc Chiến', 'Kim Cương', 320000, 'Nick Tốc Chiến rank Kim Cương, nhiều tướng, skin tốt', 'Username: tc_kimcuong, Password: tc123');
+('Valorant', 'Platinum', 450000, 'Nick Valorant rank Platinum, skin khá, đủ agent, vũ khí ổn', 'Username: valorant_plat, Password: plat123');
 
