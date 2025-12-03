@@ -42,21 +42,25 @@ const Navbar = () => {
                   </Link>
                 </li>
               )}
-              <li>
-                <Link to="/wallet" className="navbar-link navbar-wallet">
-                  💰 {formatPrice(user?.balance || 0, false)}
-                </Link>
-              </li>
-              <li>
-                <Link to="/orders" className="navbar-link">
-                  Đơn hàng
-                </Link>
-              </li>
-              <li>
-                <Link to="/cart" className="navbar-link">
-                  Giỏ hàng ({items.length})
-                </Link>
-              </li>
+              {user?.role !== 'admin' && (
+                <>
+                  <li>
+                    <Link to="/wallet" className="navbar-link navbar-wallet">
+                      💰 {formatPrice(user?.balance || 0, false)}
+                    </Link>
+                  </li>
+                  <li>
+                    <Link to="/orders" className="navbar-link">
+                      Đơn hàng
+                    </Link>
+                  </li>
+                  <li>
+                    <Link to="/cart" className="navbar-link">
+                      Giỏ hàng ({items.length})
+                    </Link>
+                  </li>
+                </>
+              )}
               <li>
                 <span className="navbar-user">Xin chào, {user?.username}</span>
               </li>

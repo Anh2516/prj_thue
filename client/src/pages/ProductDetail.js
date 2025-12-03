@@ -117,18 +117,20 @@ const ProductDetail = () => {
               </div>
             )}
             {user?.role !== 'admin' && (
-              <div className="product-account-info-notice">
-                <p>ℹ️ Thông tin tài khoản sẽ được hiển thị sau khi bạn mua và đơn hàng được xác nhận.</p>
-              </div>
+              <>
+                <div className="product-account-info-notice">
+                  <p>ℹ️ Thông tin tài khoản sẽ được hiển thị sau khi bạn mua và đơn hàng được xác nhận.</p>
+                </div>
+                <div className="product-actions">
+                  <button onClick={handleAddToCart} className="btn btn-secondary">
+                    Thêm vào giỏ hàng
+                  </button>
+                  <button onClick={handleBuyNow} className="btn btn-primary">
+                    Mua ngay
+                  </button>
+                </div>
+              </>
             )}
-            <div className="product-actions">
-              <button onClick={handleAddToCart} className="btn btn-secondary">
-                Thêm vào giỏ hàng
-              </button>
-              <button onClick={handleBuyNow} className="btn btn-primary">
-                Mua ngay
-              </button>
-            </div>
           </div>
         </div>
       </div>

@@ -28,9 +28,15 @@ const Wallet = () => {
       return;
     }
 
+    // Redirect admin to admin panel
+    if (user?.role === 'admin') {
+      navigate('/admin');
+      return;
+    }
+
     fetchBalance();
     fetchTopupRequests();
-  }, [isAuthenticated, navigate, initializing]);
+  }, [isAuthenticated, navigate, initializing, user]);
 
   const fetchTopupRequests = async () => {
     try {

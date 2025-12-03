@@ -6,7 +6,7 @@ import { formatPrice } from '../utils/formatPrice';
 import './Orders.css';
 
 const Orders = () => {
-  const { isAuthenticated, initializing } = useSelector((state) => state.auth);
+  const { isAuthenticated, initializing, user } = useSelector((state) => state.auth);
   const navigate = useNavigate();
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -24,6 +24,12 @@ const Orders = () => {
       return;
     }
 
+    // Redirect admin to admin panel
+    if (user?.role === 'admin') {
+      navigate('/admin');
+      return;
+    }
+
     const fetchOrders = async () => {
       try {
         const response = await axiosInstance.get('/orders/my-orders');
@@ -36,7 +42,7 @@ const Orders = () => {
     };
 
     fetchOrders();
-  }, [isAuthenticated, navigate, initializing]);
+  }, [isAuthenticated, navigate, initializing, user]);
 
   // Show loading while initializing auth state
   if (initializing) {

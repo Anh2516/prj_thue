@@ -10,7 +10,7 @@ import './Products.css';
 const Products = () => {
   const dispatch = useDispatch();
   const { products, loading } = useSelector((state) => state.products);
-  const { isAuthenticated } = useSelector((state) => state.auth);
+  const { isAuthenticated, user } = useSelector((state) => state.auth);
   
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedGame, setSelectedGame] = useState('');
@@ -236,12 +236,14 @@ const Products = () => {
                   <Link to={`/product/${product.id}`} className="btn btn-primary">
                     Xem chi tiết
                   </Link>
-                  <button
-                    onClick={() => handleAddToCart(product)}
-                    className="btn btn-secondary"
-                  >
-                    Thêm vào giỏ
-                  </button>
+                  {user?.role !== 'admin' && (
+                    <button
+                      onClick={() => handleAddToCart(product)}
+                      className="btn btn-secondary"
+                    >
+                      Thêm vào giỏ
+                    </button>
+                  )}
                 </div>
               </div>
             );

@@ -22,8 +22,15 @@ const Cart = () => {
     
     if (!isAuthenticated) {
       navigate('/login');
+      return;
     }
-  }, [isAuthenticated, navigate, initializing]);
+
+    // Redirect admin to admin panel
+    if (user?.role === 'admin') {
+      navigate('/admin');
+      return;
+    }
+  }, [isAuthenticated, navigate, initializing, user]);
 
   const handleRemove = (id) => {
     dispatch(removeFromCart(id));
