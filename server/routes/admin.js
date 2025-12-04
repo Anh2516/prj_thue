@@ -38,16 +38,28 @@ router.get('/stats', adminAuth, async (req, res) => {
     const [totalUsers] = await db.query('SELECT COUNT(*) as count FROM users');
     const [totalProducts] = await db.query('SELECT COUNT(*) as count FROM products');
     const [totalOrders] = await db.query('SELECT COUNT(*) as count FROM orders');
-    const [totalRevenue] = await db.query(
+    const [revenueRows] = await db.query(
       'SELECT SUM(total_price) as total FROM orders WHERE status = ?',
       ['completed']
+    );
+
+    // Tính tổng giá vốn (import_price) và lợi nhuận từ các đơn đã hoàn thành
+    const [profitRows] = await db.query(
+      `SELECT 
+         COALESCE(SUM(p.import_price), 0) AS totalImportCost,
+         COALESCE(SUM(o.total_price - p.import_price), 0) AS totalProfit
+       FROM orders o
+       JOIN products p ON o.product_id = p.id
+       WHERE o.status = 'completed'`
     );
 
     res.json({
       totalUsers: totalUsers[0].count,
       totalProducts: totalProducts[0].count,
       totalOrders: totalOrders[0].count,
-      totalRevenue: totalRevenue[0].total || 0
+      totalRevenue: revenueRows[0].total || 0,
+      totalImportCost: profitRows[0].totalImportCost || 0,
+      totalProfit: profitRows[0].totalProfit || 0,
     });
   } catch (error) {
     console.error('Get stats error:', error);

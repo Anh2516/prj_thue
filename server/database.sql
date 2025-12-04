@@ -19,6 +19,7 @@ CREATE TABLE IF NOT EXISTS products (
   id INT AUTO_INCREMENT PRIMARY KEY,
   game_name VARCHAR(100) NOT NULL,
   account_level VARCHAR(50),
+  import_price DECIMAL(20, 2) DEFAULT 0.00 COMMENT 'Giá nhập (giá vốn) của sản phẩm',
   price DECIMAL(20, 2) NOT NULL,
   description TEXT,
   account_info TEXT,

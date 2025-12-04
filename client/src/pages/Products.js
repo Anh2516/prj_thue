@@ -37,7 +37,8 @@ const Products = () => {
 
   // Filter products
   const filteredProducts = useMemo(() => {
-    let filtered = [...products];
+    // Luôn chỉ hiển thị sản phẩm còn có sẵn
+    let filtered = products.filter(p => p.status === 'available');
 
     // Filter by search term
     if (searchTerm.trim()) {

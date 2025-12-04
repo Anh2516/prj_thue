@@ -21,6 +21,7 @@ const Admin = () => {
     game_name: '',
     account_level: '',
     price: '',
+    import_price: '',
     description: '',
     account_info: '',
     account_username: '',
@@ -167,6 +168,11 @@ const Admin = () => {
             ? parseFloat(productForm.price.replace(/[^\d.]/g, '')) 
             : Number(productForm.price))
         : 0;
+      const importPriceValue = productForm.import_price
+        ? (typeof productForm.import_price === 'string'
+            ? parseFloat(productForm.import_price.replace(/[^\d.]/g, ''))
+            : Number(productForm.import_price))
+        : 0;
 
       // Combine username and password into account_info
       let accountInfo = '';
@@ -181,6 +187,7 @@ const Admin = () => {
         game_name: productForm.game_name ? productForm.game_name.trim() : '',
         account_level: productForm.account_level ? productForm.account_level.trim() : '',
         price: priceValue,
+        import_price: importPriceValue,
         description: productForm.description ? productForm.description.trim() : '',
         account_info: accountInfo,
         featured_image: productForm.featured_image && productForm.featured_image.trim() ? productForm.featured_image.trim() : null,
@@ -225,6 +232,7 @@ const Admin = () => {
         game_name: '',
         account_level: '',
         price: '',
+        import_price: '',
         description: '',
         account_info: '',
         account_username: '',
@@ -288,6 +296,7 @@ const Admin = () => {
         game_name: freshProduct.game_name || '',
         account_level: freshProduct.account_level || '',
         price: freshProduct.price || '',
+        import_price: freshProduct.import_price || '',
         description: freshProduct.description || '',
         account_info: freshProduct.account_info || '',
         account_username: accountUsername,
@@ -329,6 +338,7 @@ const Admin = () => {
         game_name: product.game_name || '',
         account_level: product.account_level || '',
         price: product.price || '',
+        import_price: product.import_price || '',
         description: product.description || '',
         account_info: product.account_info || '',
         account_username: accountUsername,
@@ -574,6 +584,24 @@ const Admin = () => {
                         </p>
                       </div>
                     </div>
+                    <div className="stat-card stat-primary">
+                      <div className="stat-icon">📉</div>
+                      <div className="stat-content">
+                        <h3>Tổng giá vốn</h3>
+                        <p className="stat-value">
+                          {formatPrice(stats.totalImportCost || 0)}
+                        </p>
+                      </div>
+                    </div>
+                    <div className="stat-card stat-success">
+                      <div className="stat-icon">💹</div>
+                      <div className="stat-content">
+                        <h3>Lợi nhuận</h3>
+                        <p className="stat-value">
+                          {formatPrice(stats.totalProfit || 0)}
+                        </p>
+                      </div>
+                    </div>
                   </div>
 
                   <div className="dashboard-charts">
@@ -699,6 +727,20 @@ const Admin = () => {
                               }
                               required
                             />
+                          </div>
+                          <div className="form-group">
+                            <label>Giá nhập (VNĐ)</label>
+                            <input
+                              type="number"
+                              value={productForm.import_price}
+                              onChange={(e) =>
+                                setProductForm({ ...productForm, import_price: e.target.value })
+                              }
+                              min="0"
+                            />
+                            <small style={{ color: '#7f8c8d', fontSize: '0.85rem' }}>
+                              Không bắt buộc. Đây là giá vốn để bạn theo dõi lợi nhuận (không hiển thị cho khách).
+                            </small>
                           </div>
                           <div className="form-group">
                             <label>Mô tả</label>
@@ -857,6 +899,9 @@ const Admin = () => {
                       <tbody>
                         {products
                           .filter((product) => {
+                            // Chỉ hiển thị sản phẩm còn có sẵn
+                            if (product.status !== 'available') return false;
+
                             if (!productSearch.trim()) return true;
                             const searchTerm = productSearch.toLowerCase();
                             return (

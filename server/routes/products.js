@@ -47,9 +47,10 @@ router.get('/', async (req, res) => {
       if (!product.hasOwnProperty('featured_image')) {
         product.featured_image = null;
       }
-      // Remove account_info if not admin
+      // Remove account_info & import_price nếu không phải admin
       if (!isAdmin) {
         delete product.account_info;
+        delete product.import_price;
       }
       return product;
     });
@@ -86,7 +87,7 @@ router.get('/:id', async (req, res) => {
       product.featured_image = null;
     }
     
-    // Remove account_info if user is not admin
+    // Remove account_info & import_price if user is not admin
     // Check if user is admin from token (if provided)
     const token = req.header('Authorization')?.replace('Bearer ', '');
     if (token) {
@@ -95,14 +96,17 @@ router.get('/:id', async (req, res) => {
         const decoded = jwt.verify(token, process.env.JWT_SECRET || 'your_secret_key_here');
         if (decoded.role !== 'admin') {
           delete product.account_info;
+          delete product.import_price;
         }
       } catch (e) {
-        // If token invalid or no token, remove account_info
+        // If token invalid or no token, remove sensitive fields
         delete product.account_info;
+        delete product.import_price;
       }
     } else {
-      // No token, remove account_info
+      // No token, remove sensitive fields
       delete product.account_info;
+      delete product.import_price;
     }
     
     res.json(product);
@@ -117,7 +121,7 @@ router.post('/', adminAuth, async (req, res) => {
   try {
     console.log('Create product request:', req.body);
     console.log('User:', req.user);
-    const { game_name, account_level, price, description, account_info, featured_image, images } = req.body;
+    const { game_name, account_level, price, import_price, description, account_info, featured_image, images } = req.body;
 
     // Validation
     if (!game_name || game_name.trim() === '') {
@@ -132,6 +136,15 @@ router.post('/', adminAuth, async (req, res) => {
     const priceNum = typeof price === 'string' ? parseFloat(price) : Number(price);
     if (isNaN(priceNum) || priceNum <= 0) {
       return res.status(400).json({ message: 'Giá phải là số dương hợp lệ' });
+    }
+
+    // Convert import_price to number (optional)
+    let importPriceNum = 0;
+    if (import_price !== undefined && import_price !== null && import_price !== '') {
+      importPriceNum = typeof import_price === 'string' ? parseFloat(import_price) : Number(import_price);
+      if (isNaN(importPriceNum) || importPriceNum < 0) {
+        return res.status(400).json({ message: 'Giá nhập phải là số không âm hợp lệ' });
+      }
     }
 
     // Parse images array to JSON string
@@ -151,8 +164,8 @@ router.post('/', adminAuth, async (req, res) => {
     const featuredImageValue = featured_image && featured_image.trim() ? featured_image.trim() : null;
 
     const [result] = await db.query(
-      'INSERT INTO products (game_name, account_level, price, description, account_info, featured_image, images, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
-      [gameNameValue, accountLevelValue, priceNum, descriptionValue, accountInfoValue, featuredImageValue, imagesJson, 'available']
+      'INSERT INTO products (game_name, account_level, import_price, price, description, account_info, featured_image, images, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)',
+      [gameNameValue, accountLevelValue, importPriceNum, priceNum, descriptionValue, accountInfoValue, featuredImageValue, imagesJson, 'available']
     );
 
     const [newProducts] = await db.query('SELECT * FROM products WHERE id = ?', [result.insertId]);
@@ -186,7 +199,7 @@ router.put('/:id', adminAuth, async (req, res) => {
   try {
     console.log('Update product request:', req.params.id, req.body);
     console.log('User:', req.user);
-    const { game_name, account_level, price, description, account_info, featured_image, status, images } = req.body;
+    const { game_name, account_level, price, import_price, description, account_info, featured_image, status, images } = req.body;
 
     // Validation
     if (!game_name || !price) {
@@ -197,6 +210,15 @@ router.put('/:id', adminAuth, async (req, res) => {
     const priceNum = typeof price === 'string' ? parseFloat(price) : price;
     if (isNaN(priceNum) || priceNum <= 0) {
       return res.status(400).json({ message: 'Price must be a valid positive number' });
+    }
+
+    // Convert import_price to number (optional)
+    let importPriceNum = 0;
+    if (import_price !== undefined && import_price !== null && import_price !== '') {
+      importPriceNum = typeof import_price === 'string' ? parseFloat(import_price) : import_price;
+      if (isNaN(importPriceNum) || importPriceNum < 0) {
+        return res.status(400).json({ message: 'Import price must be a valid non-negative number' });
+      }
     }
 
     // Parse images array to JSON string
@@ -218,10 +240,11 @@ router.put('/:id', adminAuth, async (req, res) => {
 
     // Update product
     await db.query(
-      'UPDATE products SET game_name = ?, account_level = ?, price = ?, description = ?, account_info = ?, featured_image = ?, images = ?, status = ? WHERE id = ?',
+      'UPDATE products SET game_name = ?, account_level = ?, import_price = ?, price = ?, description = ?, account_info = ?, featured_image = ?, images = ?, status = ? WHERE id = ?',
       [
         gameNameValue, 
-        accountLevelValue, 
+        accountLevelValue,
+        importPriceNum,
         priceNum, 
         descriptionValue, 
         accountInfoValue, 
